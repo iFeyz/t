@@ -52,14 +52,14 @@ namespace t
         }
 
 
-        public  void ajoutJoueur()
+        public  void ajoutJoueur() // ajoute un joueur 
         {
             using (StreamWriter redacteur = new StreamWriter("../../../utils/JoueurDB.csv", true))
             {
                 redacteur.WriteLine(this.nomJoueur+",0") ;
             }
         }
-        public  void MettreAJourScore( string nomJoueur, int nouveauScore)
+        public  void MettreAJourScore( string nomJoueur, int nouveauScore) // Met a jour dans le fchier le score
         {
             string[] lignes = File.ReadAllLines("../../../utils/JoueurDB.csv");
             for(int i = 0;i < lignes.Length; i++)
