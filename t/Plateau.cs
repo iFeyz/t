@@ -74,7 +74,8 @@ namespace t
             }
         }
 
-        public  void toFile(string[,] plateau)
+
+        public  void toFile(string[,] plateau) // Fonction de sauvegarde
         {
             int nbSave = Directory.GetFiles("../../../save/").Length;
             string pathFile = "../../../save/" + nbSave + 1.ToString();
@@ -130,7 +131,7 @@ namespace t
 
         }
 
-        public static void afficherPlateau(string[,] plateau)
+        public static void afficherPlateau(string[,] plateau) // Fonction d'affichage tableau
         {
 
             for (int i = 0; i < plateau.GetLength(0); i++)
@@ -139,11 +140,11 @@ namespace t
                 {
                     Console.Write(plateau[i, j] + "\t");
                 }
-                Console.WriteLine(); // Passer à la ligne suivante après chaque ligne de la matrice
+                Console.WriteLine(); 
             }
 
         }
-        public static string[,] majPlateau(string[,] plateauContent,RecherchePlateau recherchePlateau)
+        public static string[,] majPlateau(string[,] plateauContent,RecherchePlateau recherchePlateau) // Mise a jour du plateau lorsqu'un mot correct a été saisit 
         {
             for(int i = 0; i<recherchePlateau.indexMotTrouver.Count()-1;i++)
             {
@@ -187,7 +188,7 @@ namespace t
 
         }
 
-        public RecherchePlateau RechercheMot(string mot , string[,] plateau) // void a changer
+        public RecherchePlateau RechercheMot(string mot , string[,] plateau) // Recherche du mot dans le talbeau
         {
             for(int i=0; i < plateau.GetLength(1); i++)
             {
@@ -202,11 +203,11 @@ namespace t
             falsePlateau.motPresent = false;
             return falsePlateau;
 
-            RecherchePlateau RechercheMotRecursif(RecherchePlateau recherchePlateau)
+            RecherchePlateau RechercheMotRecursif(RecherchePlateau recherchePlateau) // rechercher de facon recursive
             {
 
 
-                RecherchePlateau RecherheMotRecursifGauche(RecherchePlateau recherchePlateau)
+                RecherchePlateau RecherheMotRecursifGauche(RecherchePlateau recherchePlateau) // direction de la recherche
                 {
                     int lignetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][0] - 1;
                     int colonnetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][1];
@@ -237,7 +238,7 @@ namespace t
                     }
                     
                 }
-                RecherchePlateau RecherheMotRecursifDroite(RecherchePlateau recherchePlateau)
+                RecherchePlateau RecherheMotRecursifDroite(RecherchePlateau recherchePlateau) // direction de la recherce
                 {
                    
                     int lignetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][0]+1;
@@ -269,7 +270,7 @@ namespace t
                     }
 
                 }
-                RecherchePlateau RecherheMotRecursifHaut(RecherchePlateau recherchePlateau)
+                RecherchePlateau RecherheMotRecursifHaut(RecherchePlateau recherchePlateau) // direction de la recherche
                 {
                     int lignetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][0];
                     int colonnetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][1]-1;
