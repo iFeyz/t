@@ -19,7 +19,7 @@ namespace t
 
             List<string[]> lignesCSV = new List<string[]>();
 
-            using (TextFieldParser lecteurCSV = new TextFieldParser("C:\\Users\\Arthur\\source\\repos\\t\\t\\utils\\JoueurDB.csv"))
+            using (TextFieldParser lecteurCSV = new TextFieldParser("../../../utils/JoueurDB.csv"))
             {
                 lecteurCSV.TextFieldType = FieldType.Delimited;
                 lecteurCSV.SetDelimiters(",");
@@ -29,36 +29,52 @@ namespace t
                     string[] champs = lecteurCSV.ReadFields();
                     lignesCSV.Add(champs);
                 }
-                if (lignesCSV.Count == 0)
-                {
-                    ajoutJoueur();
-                }
+            bool joueurExiste = false;
 
-                for (int i = 0; i < lignesCSV.Count; i++) 
+            for (int i = 0; i < lignesCSV.Count; i++)
+            {
+                if (lignesCSV[i][0] == nomJoueur)
                 {
-                    if (lignesCSV[i][0] == nomJoueur)
-                    {
-                        this.scoreJoueur = lignesCSV[i][1];
-                        break;
-                    }
-                    else
-                    {
-                        this.scoreJoueur = "0";
-                        ajoutJoueur();
-                        break;
-                    }
+                    this.scoreJoueur = lignesCSV[i][1];
+                    joueurExiste = true;
+                    break;
                 }
             }
+
+            if (!joueurExiste)
+            {
+                this.scoreJoueur = "0";
+                ajoutJoueur();
+            }
+        }
 
 
         }
 
+
         public  void ajoutJoueur()
         {
-            using (StreamWriter redacteur = new StreamWriter("C:\\Users\\Arthur\\source\\repos\\t\\t\\utils\\JoueurDB.csv",true))
+            using (StreamWriter redacteur = new StreamWriter("../../../utils/JoueurDB.csv", true))
             {
                 redacteur.WriteLine(this.nomJoueur+",0") ;
             }
         }
+        public  void MettreAJourScore( string nomJoueur, int nouveauScore)
+        {
+            string[] lignes = File.ReadAllLines("../../../utils/JoueurDB.csv");
+            for(int i = 0;i < lignes.Length; i++)
+            {
+                string[] elements = lignes[i].Split(",");
+                if(elements.Length == 2 && elements[0].Trim() == nomJoueur) 
+                {
+                    lignes[i] = nomJoueur + "," + Convert.ToString(Convert.ToInt32(this.scoreJoueur)+nouveauScore);
+                }
+                File.WriteAllLines("../../../utils/JoueurDB.csv", lignes);
+            }
+           this.scoreJoueur = Convert.ToString(Convert.ToInt32(this.scoreJoueur) + 10);
+        }
+
+
+
     }
 }

@@ -13,7 +13,6 @@ namespace t
 {
     internal class Plateau
     {
-        public string[,] plateauContent ;
         public int colonne;
         public int ligne;
 
@@ -23,7 +22,7 @@ namespace t
         public static string[,] generationPlateau(int lignes, int colonnes)
         {
             // indiquer le chemin du fichier
-            string filePath = "C:\\Users\\Arthur\\source\\repos\\t\\t\\utils\\Lettre.csv";
+            string filePath = "../../../utils/Lettre.csv";
 
             // Liste pour stocker les lignes 
             List<string[]> lignesCSV = new List<string[]>();
@@ -77,8 +76,8 @@ namespace t
 
         public  void toFile(string[,] plateau)
         {
-            int nbSave = Directory.GetFiles("save/").Length;
-            string pathFile = "save/" + nbSave + 1.ToString();
+            int nbSave = Directory.GetFiles("../../../save/").Length;
+            string pathFile = "../../../save/" + nbSave + 1.ToString();
             using (StreamWriter redacteur = new StreamWriter(pathFile))
             {
                 for (int i = 0; i < plateau.GetLength(0); i++)
@@ -100,11 +99,10 @@ namespace t
 
         }
 
-        public  void toRead(string fileName)
+        public string[,] toRead(string fileName)
         {
-            string pathFile = "C:/Users/Arthur/Documents/code/save/11";
             List<string[]> lignesCSV = new List<string[]>();
-            using (TextFieldParser lecteurCSV = new TextFieldParser(pathFile))
+            using (TextFieldParser lecteurCSV = new TextFieldParser(fileName))
             {
                 lecteurCSV.TextFieldType = FieldType.Delimited;
                 lecteurCSV.SetDelimiters(",");
@@ -128,7 +126,7 @@ namespace t
                 }
             }
 
-            this.plateauContent = plateau;
+            return plateau;
 
         }
 
@@ -144,6 +142,37 @@ namespace t
                 Console.WriteLine(); // Passer à la ligne suivante après chaque ligne de la matrice
             }
 
+        }
+        public static string[,] majPlateau(string[,] plateauContent,RecherchePlateau recherchePlateau)
+        {
+            for(int i = 0; i<recherchePlateau.indexMotTrouver.Count()-1;i++)
+            {
+                plateauContent[recherchePlateau.indexMotTrouver[i][0]-1, recherchePlateau.indexMotTrouver[i][1]] = "";
+            }
+            for (int colonne = 0; colonne < plateauContent.GetLength(1); colonne++)
+            {
+                for (int ligne = plateauContent.GetLength(0) - 1; ligne >= 0; ligne--)
+                {
+                    if (plateauContent[ligne, colonne] == "")
+                    {
+                        // Chercher la première lettre non vide au-dessus
+                        int nouvelleLigne = ligne - 1;
+                        while (nouvelleLigne >= 0 && plateauContent[nouvelleLigne, colonne] == "")
+                        {
+                            nouvelleLigne--;
+                        }
+
+                        if (nouvelleLigne >= 0)
+                        {
+                            // Déplacer la lettre vers le bas
+                            plateauContent[ligne, colonne] = plateauContent[nouvelleLigne, colonne];
+                            plateauContent[nouvelleLigne, colonne] = "";
+                        }
+                    }
+                }
+            }
+
+            return plateauContent;
         }
 
         public class RecherchePlateau
@@ -181,6 +210,11 @@ namespace t
                 {
                     int lignetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][0] - 1;
                     int colonnetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][1];
+                    if ( (colonnetoCheck > plateau.GetLength(1) - 1 && colonnetoCheck >0) || (lignetoCheck > plateau.GetLength(0) - 1 && lignetoCheck >0))
+                    {
+                        recherchePlateau.isPresentGauche = false;
+                        return (RechercheMotRecursif(recherchePlateau));
+                    }
                     if (plateau[lignetoCheck, colonnetoCheck] == mot[recherchePlateau.indexMot].ToString())
                     {
                         recherchePlateau.isPresentGauche = true;
@@ -205,8 +239,14 @@ namespace t
                 }
                 RecherchePlateau RecherheMotRecursifDroite(RecherchePlateau recherchePlateau)
                 {
-                    int lignetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][0] +1;
+                   
+                    int lignetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][0]+1;
                     int colonnetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][1];
+                    if(colonnetoCheck > plateau.GetLength(1)-1 || lignetoCheck > plateau.GetLength(0)-1)
+                    {
+                        recherchePlateau.isPresentDroite = false;
+                        return (RechercheMotRecursif(recherchePlateau));
+                    }
                     if (plateau[lignetoCheck, colonnetoCheck] == mot[recherchePlateau.indexMot].ToString())
                     {
                         recherchePlateau.isPresentDroite = true;
@@ -233,6 +273,11 @@ namespace t
                 {
                     int lignetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][0];
                     int colonnetoCheck = recherchePlateau.indexMotTrouver[recherchePlateau.indexMot][1]-1;
+                    if (colonnetoCheck > plateau.GetLength(1) - 1 || lignetoCheck > plateau.GetLength(0) - 1 || colonnetoCheck<0)
+                    {
+                        recherchePlateau.isPresentHaut = false;
+                        return (RechercheMotRecursif(recherchePlateau));
+                    }
                     if (plateau[lignetoCheck, colonnetoCheck] == mot[recherchePlateau.indexMot].ToString())
                     {
                         recherchePlateau.isPresentHaut = true;
@@ -260,26 +305,26 @@ namespace t
                 {
                     return (recherchePlateau);
                 }
-                else if (recherchePlateau.indexMot == mot.Length && recherchePlateau.motPresent == null)
+                if (recherchePlateau.indexMot == mot.Length && recherchePlateau.motPresent == null)
                 {
                     recherchePlateau.motPresent = false;
                     return (recherchePlateau);
                 }
-                else if(recherchePlateau.isPresentGauche == false && recherchePlateau.isPresentDroite == false && recherchePlateau.isPresentHaut == false)
+                if(recherchePlateau.isPresentGauche == false && recherchePlateau.isPresentDroite == false && recherchePlateau.isPresentHaut == false)
                 {
                     recherchePlateau.motPresent = false;
                     return (recherchePlateau);
                 }
 
-                if(recherchePlateau.isPresentGauche ==  false) 
+                if(recherchePlateau.isPresentGauche ==  false && recherchePlateau.isPresentDroite == null) 
                 {
                     RecherheMotRecursifDroite(recherchePlateau);
                 }
-                if(recherchePlateau.isPresentDroite == false)
+                if(recherchePlateau.isPresentDroite == false && recherchePlateau.isPresentGauche == false)
                 {
                     RecherheMotRecursifHaut(recherchePlateau);
                 }
-                if(recherchePlateau.isPresentHaut == false)
+                if(recherchePlateau.isPresentHaut == false && recherchePlateau.isPresentGauche == false && recherchePlateau.isPresentDroite == false)
                 {
                     RecherheMotRecursifGauche(recherchePlateau);
                 }

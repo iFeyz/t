@@ -13,7 +13,7 @@ namespace t
         public Dictionnaire()
         {
             // Lecture des mots depuis le fichier et séparation par espace
-            mots = File.ReadAllText("C:\\Users\\Arthur\\source\\repos\\t\\t\\utils\\Mots_Français.txt").Split(' ');
+            mots = File.ReadAllText("../../../utils/Mots_Français.txt").Split(' ');
 
             // Tri des mots
             Array.Sort(mots);

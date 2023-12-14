@@ -38,8 +38,10 @@
             label2 = new Label();
             textBox2 = new TextBox();
             button5 = new Button();
-            textBox3 = new TextBox();
-            button6 = new Button();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -83,6 +85,7 @@
             button2.TabIndex = 2;
             button2.Text = "Sauvegarder";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -92,6 +95,7 @@
             button3.TabIndex = 3;
             button3.Text = "Choisir Sauvegarde";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // textBox1
             // 
@@ -152,32 +156,55 @@
             button5.Visible = false;
             button5.Click += button5_Click;
             // 
-            // textBox3
+            // label3
             // 
-            textBox3.Location = new Point(243, 422);
-            textBox3.Name = "textBox3";
-            textBox3.PlaceholderText = "Sasir mot...";
-            textBox3.Size = new Size(207, 23);
-            textBox3.TabIndex = 10;
-            textBox3.TextChanged += textBox3_TextChanged;
+            label3.AutoSize = true;
+            label3.Location = new Point(74, 175);
+            label3.Name = "label3";
+            label3.Size = new Size(34, 15);
+            label3.TabIndex = 10;
+            label3.Text = "00:00";
+            label3.Click += label3_Click;
             // 
-            // button6
+            // label4
             // 
-            button6.Location = new Point(456, 422);
-            button6.Name = "button6";
-            button6.Size = new Size(75, 23);
-            button6.TabIndex = 11;
-            button6.Text = "Valider";
-            button6.UseVisualStyleBackColor = true;
-            button6.Click += button6_Click;
+            label4.AutoSize = true;
+            label4.Location = new Point(46, 149);
+            label4.Name = "label4";
+            label4.Size = new Size(111, 15);
+            label4.TabIndex = 11;
+            label4.Text = "Temps de la partie : ";
+            label4.Click += label4_Click;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(46, 205);
+            label5.Name = "label5";
+            label5.Size = new Size(92, 15);
+            label5.TabIndex = 12;
+            label5.Text = "Temps du tour : ";
+            label5.Click += label5_Click;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(74, 233);
+            label6.Name = "label6";
+            label6.Size = new Size(34, 15);
+            label6.TabIndex = 13;
+            label6.Text = "00:00";
+            label6.Click += label6_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(795, 457);
-            Controls.Add(button6);
-            Controls.Add(textBox3);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
             Controls.Add(button5);
             Controls.Add(textBox2);
             Controls.Add(label2);
@@ -208,7 +235,10 @@
         private Label label2;
         private TextBox textBox2;
         private Button button5;
-        private TextBox textBox3;
-        private Button button6;
+        private System.Windows.Forms.Label labelTempsRestant;
+        private Label label3;
+        private Label label4;
+        private Label label5;
+        private Label label6;
     }
 }
